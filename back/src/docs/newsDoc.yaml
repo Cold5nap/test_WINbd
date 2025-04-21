@@ -1,0 +1,80 @@
+tags:
+  name: News
+  description: Crud для новостей
+/api/news:
+  get:
+    tags: [News]
+    summary: Список новостей
+    responses:
+      200:
+        description: Список новостей
+  post:
+    tags: [News]
+    summary: Добавление новости
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - title
+              - text
+            properties:
+              title:
+                type: string
+                description: Заголовок статьи
+                example: Заголовок
+              text:
+                type: string
+                description: Текст статьи
+                example: LOREM IPSUM
+    responses:
+      200:
+        description: добавленная новость
+/api/news/{id}:
+  get:
+    tags: [News]
+    parameters:
+      - in: path
+        name: id
+    summary: новости по id
+    responses:
+      200:
+        description: новость
+  put:
+    tags: [News]
+    parameters:
+      - in: path
+        name: id
+    summary: Обновление новости
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - title
+              - text
+            properties:
+              title:
+                type: string
+                description: Заголовок статьи
+                example: Заголовок
+              text:
+                type: string
+                description: Текст статьи
+                example: LOREM IPSUM
+    responses:
+      200:
+        description: Успешное добавление новостей
+  delete:
+    tags: [News]
+    parameters:
+      - in: path
+        name: id
+    summary: Удаление новости по id
+    responses:
+      200:
+        description: Успешное удаление

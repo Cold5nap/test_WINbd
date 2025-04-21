@@ -7,13 +7,13 @@ const swaggerOptions = {
 	definition: {
 		openapi: "3.0.0",
 		info: {
-			title: "NEWS",
+			title: "test1 winbd",
 			version: "1.0.0",
 			description: "Создание новостей, авторизация по токену",
 		},
 		servers: [{ url: "http://localhost:3000" }],
 	},
-	apis: ["./routers/*.ts"], // Path to the API docs (adjust as needed)
+	apis: ['./src/docs/**/*.yaml'], // Path to the API docs (adjust as needed)
 };
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 swaggerRouter.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));

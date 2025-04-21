@@ -7,7 +7,7 @@ import { verifyToken } from "../middlewares/authMiddleware";
 const apiRouter = express.Router();
 
 // Валидация по токену
-newsRouter.use(verifyToken)
+// newsRouter.use(verifyToken)
 
 apiRouter.use(authRouter)
 apiRouter.use(newsRouter)
