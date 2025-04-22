@@ -1,0 +1,82 @@
+tags:
+  name: Auth
+  description: Авторизация
+
+components:
+  responses:
+    Unauthorize:
+      description: Не авторизирован
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SimpleResponse'
+
+  parameters:
+    AuthorizationHeader:
+      in: header
+      name: token
+      required: true
+      schema:
+        type: string
+      description: Токен для авторизации
+      example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODA3NTVkOGJhNWZlZjUwMzE5YzQzMTEiLCJpYXQiOjE3NDUzMTg3NjIsImV4cCI6MTc0NTMyMjM2Mn0.f-00M7vtbQXa-f88rB_GpX3bzZRe5JbYzr0niLWsS9w"
+  schemas:
+    SimpleResponse:
+      type: object
+      properties:
+        message:
+          type: string
+    User:
+      type: object
+      properties:
+        login:
+          type: string
+          description: Логин пользователя
+          example: Имярек
+        password:
+          type: string
+          description: Пароль
+          example: пароль
+    UserResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        newUser:
+          $ref: '#/components/schemas/User'
+        token:
+          type: string
+
+# endpoints
+/api/register:
+  post:
+    tags: [Auth]
+    summary: Регистрация пользователя
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+    responses:
+      200:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserResponse'
+/api/login:
+  post:
+    tags: [Auth]
+    summary: Авторизация пользователя
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+    responses:
+      200:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserResponse'

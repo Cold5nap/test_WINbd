@@ -15,6 +15,15 @@ components:
           type: string
           description: Текст статьи
           example: LOREM IPSUM
+        publishAt:
+          description: Время публикации. Отправлять с часовым поясом как в примере.
+          type: string
+          format: date-time
+          example: "2025-04-22T15:10:00.000+03:00"
+        isPublished:
+          description: Опубликовано или не опубликовано
+          type: boolean
+          example: true
     Response:
       type: object
       properties:
@@ -26,9 +35,13 @@ components:
 # endpoints
 /api/news:
   get:
+    parameters:
+      - $ref: '#/components/parameters/AuthorizationHeader'
     tags: [News]
     summary: Список новостей
     responses:
+      401:
+        $ref: '#/components/responses/Unauthorize'
       200:
         description: Список новостей
         content:
@@ -36,8 +49,11 @@ components:
             schema:
               $ref: '#/components/schemas/News'
   post:
+    parameters:
+      - $ref: '#/components/parameters/AuthorizationHeader'
     tags: [News]
     summary: Добавление новости
+    description: Добавлять новости можно сразу или отложенно. При передаче {isPublished:false, publishAt:2025-04-22T15:10:00.000+03:00}
     requestBody:
       required: true
       content:
@@ -45,6 +61,8 @@ components:
           schema:
             $ref: '#/components/schemas/News'
     responses:
+      401:
+        $ref: '#/components/responses/Unauthorize'
       200:
         description: добавленная новость
         content:
@@ -59,8 +77,11 @@ components:
     parameters:
       - in: path
         name: id
+      - $ref: '#/components/parameters/AuthorizationHeader'
     summary: новости по id
     responses:
+      401:
+        $ref: '#/components/responses/Unauthorize'
       200:
         description: новость
         content:
@@ -74,6 +95,7 @@ components:
     parameters:
       - in: path
         name: id
+      - $ref: '#/components/parameters/AuthorizationHeader'
     summary: Обновление новости
     requestBody:
       required: true
@@ -82,6 +104,8 @@ components:
           schema:
             $ref: '#/components/schemas/News'
     responses:
+      401:
+        $ref: '#/components/responses/Unauthorize'
       200:
         description: Успешное добавление новостей
         content:
@@ -93,8 +117,11 @@ components:
     parameters:
       - in: path
         name: id
+      - $ref: '#/components/parameters/AuthorizationHeader'
     summary: Удаление новости по id
     responses:
+      401:
+        $ref: '#/components/responses/Unauthorize'
       200:
         description: Успешное удаление
         content:

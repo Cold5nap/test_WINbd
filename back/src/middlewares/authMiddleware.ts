@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { Config } from "../config";
 
 export function verifyToken(req, res, next) {
-	const token = req.headers["authorization"];
+	const token = req.headers["token"];
 	if (!token)
 		return res
 			.status(401)

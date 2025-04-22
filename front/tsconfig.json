@@ -1,0 +1,28 @@
+{
+	"compilerOptions": {
+	  "downlevelIteration": true,
+	  "lib": ["dom", "dom.iterable", "esnext"],
+	  "allowJs": true,
+	  "allowSyntheticDefaultImports": true,
+	  "skipLibCheck": true,
+	  "esModuleInterop": true,
+	  "strict": true,
+	  "forceConsistentCasingInFileNames": true,
+	  "moduleResolution": "node",
+	  "resolveJsonModule": true,
+	  "isolatedModules": true,
+	  "noEmit": true,
+	  "jsx": "react",
+
+	  "baseUrl": "./",
+	  "paths": {
+		"@shared/*": ["./src/shared/*"],
+		"@entities/*": ["./src/entities/*"],
+		"@features/*": ["./src/features/*"],
+		"@widgets/*": ["./src/widgets/*"],
+		"@pages/*": ["./src/pages/*"],
+		"@src/*": ["./src/*"]
+	  }
+	},
+	"include": ["src"]
+  }

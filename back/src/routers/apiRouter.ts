@@ -6,11 +6,9 @@ import { verifyToken } from "../middlewares/authMiddleware";
 
 const apiRouter = express.Router();
 
-// Валидация по токену
-// newsRouter.use(verifyToken)
 apiRouter.use(express.json());
 apiRouter.use(authRouter)
-apiRouter.use(newsRouter)
+apiRouter.use('/news', newsRouter)
 apiRouter.use(swaggerRouter)
 
 export default apiRouter
