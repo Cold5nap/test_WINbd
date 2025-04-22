@@ -1,6 +1,29 @@
 tags:
   name: News
   description: Crud для новостей
+
+components:
+  schemas:
+    News:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Заголовок статьи
+          example: Заголовок
+        text:
+          type: string
+          description: Текст статьи
+          example: LOREM IPSUM
+    Response:
+      type: object
+      properties:
+        message:
+          type: string
+        news:
+          $ref: '#/components/schemas/News'
+
+# endpoints
 /api/news:
   get:
     tags: [News]
@@ -8,6 +31,10 @@ tags:
     responses:
       200:
         description: Список новостей
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/News'
   post:
     tags: [News]
     summary: Добавление новости
@@ -16,22 +43,16 @@ tags:
       content:
         application/json:
           schema:
-            type: object
-            required:
-              - title
-              - text
-            properties:
-              title:
-                type: string
-                description: Заголовок статьи
-                example: Заголовок
-              text:
-                type: string
-                description: Текст статьи
-                example: LOREM IPSUM
+            $ref: '#/components/schemas/News'
     responses:
       200:
         description: добавленная новость
+        content:
+          application/json:
+            schema:
+              type: object
+              items:
+                $ref: '#/components/schemas/Response'
 /api/news/{id}:
   get:
     tags: [News]
@@ -42,6 +63,12 @@ tags:
     responses:
       200:
         description: новость
+        content:
+          application/json:
+            schema:
+              type: object
+              items:
+                $ref: '#/components/schemas/News'
   put:
     tags: [News]
     parameters:
@@ -53,22 +80,14 @@ tags:
       content:
         application/json:
           schema:
-            type: object
-            required:
-              - title
-              - text
-            properties:
-              title:
-                type: string
-                description: Заголовок статьи
-                example: Заголовок
-              text:
-                type: string
-                description: Текст статьи
-                example: LOREM IPSUM
+            $ref: '#/components/schemas/News'
     responses:
       200:
         description: Успешное добавление новостей
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Response'
   delete:
     tags: [News]
     parameters:
@@ -78,3 +97,7 @@ tags:
     responses:
       200:
         description: Успешное удаление
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Response'

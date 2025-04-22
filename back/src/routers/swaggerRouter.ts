@@ -7,7 +7,7 @@ const swaggerOptions = {
 	definition: {
 		openapi: "3.0.0",
 		info: {
-			title: "test1 winbd",
+			title: "test winbd",
 			version: "1.0.0",
 			description: "Создание новостей, авторизация по токену",
 		},

@@ -8,7 +8,7 @@ const apiRouter = express.Router();
 
 // Валидация по токену
 // newsRouter.use(verifyToken)
-
+apiRouter.use(express.json());
 apiRouter.use(authRouter)
 apiRouter.use(newsRouter)
 apiRouter.use(swaggerRouter)

@@ -23,6 +23,7 @@ newsRouter.get(pathWithID, async (req, res) => {
 });
 
 newsRouter.post(path, async (req, res) => {
+	console.log(req.body);
 	const { title, text } = req.body;
 	const news = await News.create({ title, text });
 	res.json({ message: "Успешно добавлено", news });
