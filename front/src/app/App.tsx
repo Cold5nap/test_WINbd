@@ -1,18 +1,32 @@
-import NewsForm from "@features/NewsForm";
-import { Flex } from "antd";
+// App.jsx
 import React from "react";
+import { Provider } from "react-redux";
+import store from "./store";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ProtectedRoute } from "@features/auth";
+import MainLayout from "@widgets/layout/MainLayout";
+import ArticleEditorPage from "@pages/ArticleEditorPage";
+import ArticleListPage from "@pages/ArticleListPage";
+import ArticleViewPage from "@pages/ArticleViewPage";
+import LoginPage from "@pages/LoginPage";
 
-function App() {
+const App = () => {
 	return (
-		<>
-			<div style={{ height: 100 }}></div>
-			<Flex justify="center">
-				{/* hello */}
-				<div>
-				<NewsForm></NewsForm></div>
-			</Flex>
-		</>
+		<Provider store={store}>
+			<BrowserRouter>
+				<Routes>
+					<Route path="/login" element={<LoginPage />} />
+					<Route element={<ProtectedRoute />}>
+						<Route element={<MainLayout />}>
+							<Route path="edit/:id?" element={<ArticleEditorPage />} />
+							<Route index element={<ArticleListPage />} />
+							<Route path="article/:id" element={<ArticleViewPage />} />
+						</Route>
+					</Route>
+				</Routes>
+			</BrowserRouter>
+		</Provider>
 	);
-}
+};
 
 export default App;

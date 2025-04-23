@@ -1,20 +1,28 @@
 tags:
-  name: News
+  name: Article
   description: Crud для новостей
 
 components:
   schemas:
-    News:
+    Article:
       type: object
       properties:
         title:
           type: string
           description: Заголовок статьи
           example: Заголовок
-        text:
-          type: string
-          description: Текст статьи
-          example: LOREM IPSUM
+        content:
+          type: array
+          description: блоки статьи
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                default: text
+              data:
+                type: string
+
         publishAt:
           description: Время публикации. Отправлять с часовым поясом как в примере.
           type: string
@@ -29,15 +37,15 @@ components:
       properties:
         message:
           type: string
-        news:
-          $ref: '#/components/schemas/News'
+        article:
+          $ref: '#/components/schemas/Article'
 
 # endpoints
-/api/news:
+/api/article:
   get:
     parameters:
       - $ref: '#/components/parameters/AuthorizationHeader'
-    tags: [News]
+    tags: [Article]
     summary: Список новостей
     responses:
       401:
@@ -47,11 +55,11 @@ components:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/News'
+              $ref: '#/components/schemas/Article'
   post:
     parameters:
       - $ref: '#/components/parameters/AuthorizationHeader'
-    tags: [News]
+    tags: [Article]
     summary: Добавление новости
     description: Добавлять новости можно сразу или отложенно. При передаче {isPublished:false, publishAt:2025-04-22T15:10:00.000+03:00}
     requestBody:
@@ -59,7 +67,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/News'
+            $ref: '#/components/schemas/Article'
     responses:
       401:
         $ref: '#/components/responses/Unauthorize'
@@ -71,9 +79,9 @@ components:
               type: object
               items:
                 $ref: '#/components/schemas/Response'
-/api/news/{id}:
+/api/article/{id}:
   get:
-    tags: [News]
+    tags: [Article]
     parameters:
       - in: path
         name: id
@@ -89,9 +97,9 @@ components:
             schema:
               type: object
               items:
-                $ref: '#/components/schemas/News'
+                $ref: '#/components/schemas/Article'
   put:
-    tags: [News]
+    tags: [Article]
     parameters:
       - in: path
         name: id
@@ -102,7 +110,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/News'
+            $ref: '#/components/schemas/Article'
     responses:
       401:
         $ref: '#/components/responses/Unauthorize'
@@ -113,7 +121,7 @@ components:
             schema:
               $ref: '#/components/schemas/Response'
   delete:
-    tags: [News]
+    tags: [Article]
     parameters:
       - in: path
         name: id

@@ -1,9 +1,14 @@
 import express from "express";
+import { upload } from "../services/static";
 
 const staticRouter = express.Router();
 
-staticRouter.get("/", (req, res) => {
-	res.send("Hello World!");
+// Роут для загрузки файлов
+staticRouter.post("/api/upload", upload.single("file"), (req, res) => {
+	res.json({ url: `/uploads/${req.file.filename}` });
 });
 
-export default staticRouter
+// Отдача статических файлов
+staticRouter.use("/uploads", express.static("uploads"));
+
+export default staticRouter;

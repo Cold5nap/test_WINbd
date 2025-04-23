@@ -1,10 +1,10 @@
 import cron from "node-cron";
-import { News } from "../models/newsModel";
+import { Article } from "../models/articleModel";
 
-export async function cronPublishedNews() {
+export async function cronPublishedArticle() {
 	// Проверка каждую минуту
 	cron.schedule("* * * * *", async () => {
-		let updates = await News.updateMany(
+		let updates = await Article.updateMany(
 			{ isPublished: false, publishAt: { $lte: new Date() } },
 			{ $set: { isPublished: true } }
 		);
