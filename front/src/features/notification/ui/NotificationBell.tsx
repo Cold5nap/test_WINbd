@@ -36,6 +36,7 @@ const NotificationBell: FC = () => {
 
 		// Обработчик новых уведомлений
 		socket.on("new_notification", (notification: Notification) => {
+			console.log('new_notification,front');
 			setNotifications((prev) => [notification, ...prev]);
 			setUnreadCount((prev) => prev + 1);
 		});

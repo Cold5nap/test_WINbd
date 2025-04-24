@@ -12,9 +12,9 @@ const app = express();
 const port = 3001;
 
 
-createSocket(app)
+const [socket, notifications] = createSocket(app)
 connectToMongodb();
-cronPublishedArticle();
+cronPublishedArticle(socket,notifications);
 
 app.use(cors());
 
@@ -22,6 +22,6 @@ app.listen(port, () => {
 	console.log(`Server running on port ${port}`);
 });
 
-app.use(morgan('combined'));
+app.use(morgan('dev'));
 app.use("/api", apiRouter);
 app.use(staticRouter);

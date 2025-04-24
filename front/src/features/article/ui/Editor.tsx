@@ -1,5 +1,5 @@
 // Editor.jsx
-import React, { FC, useState } from "react";
+import React, { FC, useCallback, useState } from "react";
 import {
 	Button,
 	Card,
@@ -9,6 +9,7 @@ import {
 	message,
 	Select,
 	Space,
+	DatePicker,
 } from "antd";
 import {
 	UploadOutlined,
@@ -24,6 +25,7 @@ import { Article } from "../model/articleModel";
 import { useNavigate } from "react-router-dom";
 import BackButton from "@shared/ui/BackButton";
 import { useSocket } from "@features/notification";
+import dayjs from "dayjs";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -40,9 +42,9 @@ interface EditorProps {
 }
 const Editor: FC<EditorProps> = ({ article }) => {
 	const socket = useSocket();
-	const navigate = useNavigate();
 	const [content, setContent] = useState([]);
 	const [title, setTitle] = useState("");
+	const [publishAt, setPublishAt] = useState<any>();
 	const [selectedType, setSelectedType] = useState("text");
 	const [saveArticle] = useSaveArticleMutation();
 	const [uploadFile] = useUploadFileMutation();
@@ -64,20 +66,27 @@ const Editor: FC<EditorProps> = ({ article }) => {
 		}
 	};
 
-	const handleSave = async () => {
+	const handleSave = useCallback(async () => {
 		try {
-			console.log("save");
-			await saveArticle({ title, content }).unwrap();
+			const newArticle: any = { title, content };
+
+			if (publishAt > dayjs()) {
+				console.log(publishAt );
+				newArticle.publishAt = publishAt;
+				newArticle.isPublished = false;
+			}
+
+			await saveArticle(newArticle).unwrap();
 			// Отправляем уведомление через сокет
-			socket.emit("article_created", {
-				title: article.title,
-				description: article.content[0]?.data || "",
-			});
-			message.success("Статья сохранена");
+			socket &&
+				socket.emit("article_created", {
+					title,
+					description: content[0]?.data || "",
+				});
 		} catch (error) {
-			message.error("Ошибка сохранения статьи");
+			console.error("Ошибка сохранения статьи",error);
 		}
-	};
+	}, [content, publishAt, saveArticle, socket, title]);
 
 	const updateBlock = (index, newData) => {
 		const newContent = [...content];
@@ -131,10 +140,8 @@ const Editor: FC<EditorProps> = ({ article }) => {
 			case "code":
 				return (
 					<MDEditor
-						value={`\`\`\`\n${block.data}\n\`\`\``}
-						onChange={(value) =>
-							updateBlock(index, { data: value.replace(/^```|```$/g, "") })
-						}
+						value={block.data}
+						onChange={(value) => updateBlock(index, { data: value })}
 						preview="edit"
 						height={200}
 					/>
@@ -168,7 +175,14 @@ const Editor: FC<EditorProps> = ({ article }) => {
 						placeholder="Введите заголовок"
 					/>
 				</Form.Item>
-
+				<Form.Item label="Дата и время публикации">
+					<DatePicker
+						showTime
+						onChange={(value) => {
+							setPublishAt(value);
+						}}
+					/>
+				</Form.Item>
 				{content.map((block, index) => (
 					<Card
 						key={index}

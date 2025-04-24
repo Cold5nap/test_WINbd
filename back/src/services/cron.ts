@@ -1,7 +1,8 @@
 import cron from "node-cron";
 import { Article } from "../models/articleModel";
+import { updateNotification } from "./socket";
 
-export async function cronPublishedArticle() {
+export async function cronPublishedArticle(socket,notifications) {
 	// Проверка каждую минуту
 	cron.schedule("* * * * *", async () => {
 		let updates = await Article.updateMany(
@@ -10,6 +11,7 @@ export async function cronPublishedArticle() {
 		);
 		if (updates.modifiedCount > 0) {
 			console.log("Опубликовано новостей: " + updates.modifiedCount);
+			updateNotification(undefined,notifications,socket)
 		}
 	});
 }

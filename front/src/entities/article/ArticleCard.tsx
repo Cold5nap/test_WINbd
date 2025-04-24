@@ -60,7 +60,7 @@ const ArticleCard: FC<ArticleCardProps> = ({
 					{article.isPublished ? (
 						<Tag color="green">Опубликовано</Tag>
 					) : (
-						<Tag color="orange">Черновик</Tag>
+						<Tag color="orange">Ожидает</Tag>
 					)}
 				</Space>
 			}

@@ -1,4 +1,4 @@
-import { NotificationBell } from "@features/notification";
+import { NotificationBell, SocketProvider } from "@features/notification";
 import { Tabs } from "antd";
 import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -14,7 +14,7 @@ const MainLayout = () => {
 		navigate("/" + activeKey);
 	};
 	return (
-		// <SocketProvider>
+		<SocketProvider>
 			<div style={{ padding: 24 }}>
 				<Tabs
 					tabBarExtraContent={{ left: <NotificationBell /> }}
@@ -23,7 +23,7 @@ const MainLayout = () => {
 					onChange={tabChangeHandler}
 				/>
 			</div>
-		// </SocketProvider>
+		</SocketProvider>
 	);
 };
 export default MainLayout;
